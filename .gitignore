@@ -55,3 +55,4 @@ _archive-sanity/
 
 # Claude
 .claude/
+.env*.local
