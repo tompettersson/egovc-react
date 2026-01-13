@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Payload CMS
+payload.db
+payload.db-journal
+media/
+
+# Playwright
+.playwright-mcp/
+
+# Archive/unused
+sanity/
+_input/
+_archive-sanity/
+
+# Claude
+.claude/

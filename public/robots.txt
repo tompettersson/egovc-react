@@ -1,0 +1,14 @@
+# EGovC Website - robots.txt
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api/*
+Disallow: /_next/*
+
+# Sitemap
+Sitemap: https://egovc.de/sitemap.xml
