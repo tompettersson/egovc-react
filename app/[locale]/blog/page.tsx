@@ -6,6 +6,9 @@ import { getCachedGlobal, getCachedBlogPosts } from '@/lib/payload/cached-querie
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { type Locale } from '@/lib/i18n/config';
 
+// Force dynamic rendering to always fetch fresh blog posts from the database
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

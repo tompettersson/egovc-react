@@ -8,6 +8,9 @@ import { getDictionary } from '@/lib/i18n/dictionaries';
 import { type Locale } from '@/lib/i18n/config';
 import { getCachedBlogPost, getCachedBlogPosts } from '@/lib/payload/cached-queries';
 
+// Allow dynamic rendering for blog posts not pre-generated at build time
+export const dynamicParams = true;
+
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
 }
