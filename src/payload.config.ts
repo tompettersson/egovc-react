@@ -33,6 +33,12 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      graphics: {
+        Logo: './components/AdminLogo#AdminLogo',
+        Icon: './components/AdminLogo#AdminIcon',
+      },
+    },
   },
   // Localization for multi-language support (German default, English)
   localization: {
