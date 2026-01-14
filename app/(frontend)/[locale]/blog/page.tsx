@@ -16,7 +16,7 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { locale } = await props.params;
   const dict = getDictionary(locale as Locale);
-  const pageData = await getCachedGlobal('blog-page');
+  const pageData = await getCachedGlobal('blog-page', locale);
 
   return {
     title: pageData?.seo?.metaTitle || `${dict.blog.title} | EGovC`,
@@ -60,8 +60,8 @@ export default async function BlogPage(props: Props) {
   const dict = getDictionary(locale as Locale);
 
   const [pageData, postsResult] = await Promise.all([
-    getCachedGlobal('blog-page'),
-    getCachedBlogPosts(100),
+    getCachedGlobal('blog-page', locale),
+    getCachedBlogPosts(100, locale),
   ]);
   const posts = postsResult?.docs || [];
 

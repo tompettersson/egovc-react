@@ -31,7 +31,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const dict = getDictionary(locale as Locale);
-  const post = await getCachedBlogPost(slug);
+  const post = await getCachedBlogPost(slug, locale);
 
   if (!post) {
     return { title: `${dict.blog.notFound} | EGovC` };
@@ -75,7 +75,7 @@ function getCategoryLabel(category: string, categories: Record<string, string>):
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug, locale } = await params;
-  const post = await getCachedBlogPost(slug);
+  const post = await getCachedBlogPost(slug, locale);
   const dict = getDictionary(locale as Locale);
 
   if (!post) {

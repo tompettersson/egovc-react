@@ -19,12 +19,14 @@ export const Whitepapers: CollectionConfig = {
       type: 'text',
       label: 'Titel',
       required: true,
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       label: 'Beschreibung',
       required: true,
+      localized: true,
     },
     {
       name: 'type',

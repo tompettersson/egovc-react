@@ -12,8 +12,9 @@ type Props = {
 };
 
 // SEO Metadata
-export async function generateMetadata(): Promise<Metadata> {
-  const pageData = await getCachedGlobal('whitepaper-page');
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const { locale } = await props.params;
+  const pageData = await getCachedGlobal('whitepaper-page', locale);
 
   return {
     title: pageData?.seo?.metaTitle || 'Whitepaper | EGovC - Wissen zur Digitalisierung',
@@ -22,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: pageData?.seo?.metaTitle || 'Whitepaper | EGovC',
       description: pageData?.seo?.metaDescription || 'Fachwissen zur digitalen Transformation.',
       type: 'website',
-      locale: 'de_DE',
+      locale: locale === 'de' ? 'de_DE' : 'en_US',
       ...(pageData?.seo?.ogImage?.asset?.url && {
         images: [{ url: pageData.seo.ogImage.asset.url, width: 1200, height: 630 }],
       }),
@@ -36,8 +37,8 @@ export default async function WhitepaperPage(props: Props) {
   const dict = getDictionary(locale as Locale);
 
   const [pageData, whitepapersResult] = await Promise.all([
-    getCachedGlobal('whitepaper-page'),
-    getCachedWhitepapers(),
+    getCachedGlobal('whitepaper-page', locale),
+    getCachedWhitepapers(locale),
   ]);
   const fallbackData = whitepaperData;
 

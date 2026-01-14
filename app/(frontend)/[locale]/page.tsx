@@ -19,7 +19,7 @@ type Props = {
 // SEO Metadata
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { locale } = await props.params;
-  const data = await getCachedGlobal('homepage');
+  const data = await getCachedGlobal('homepage', locale);
   const dict = getDictionary(locale as Locale);
 
   return {
@@ -39,8 +39,8 @@ export default async function Home(props: Props) {
   const dict = getDictionary(locale as Locale);
 
   const [homepageData, references] = await Promise.all([
-    getCachedGlobal('homepage'),
-    getCachedReferences(),
+    getCachedGlobal('homepage', locale),
+    getCachedReferences(locale),
   ]);
 
   // Use dictionary as primary source for text (CMS is not localized)

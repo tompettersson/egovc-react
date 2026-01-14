@@ -40,6 +40,7 @@ export const Media: CollectionConfig = {
       type: 'text',
       label: 'Alt Text',
       required: true,
+      localized: true,
     },
   ],
 }

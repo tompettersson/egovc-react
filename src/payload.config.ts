@@ -34,6 +34,12 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  // Localization for multi-language support (German default, English)
+  localization: {
+    locales: ['de', 'en'],
+    defaultLocale: 'de',
+    fallback: true,
+  },
   collections: [
     Users,
     Media,

@@ -36,6 +36,7 @@ export const References: CollectionConfig = {
       type: 'textarea',
       label: 'Zitat / Testimonial',
       required: true,
+      localized: true,
     },
     {
       name: 'image',

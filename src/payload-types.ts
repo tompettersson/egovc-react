@@ -94,7 +94,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('de' | 'en') | ('de' | 'en')[];
   globals: {
     homepage: Homepage;
     'site-settings': SiteSetting;
@@ -115,7 +115,7 @@ export interface Config {
     'blog-page': BlogPageSelect<false> | BlogPageSelect<true>;
     'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
   };
-  locale: null;
+  locale: 'de' | 'en';
   user: User & {
     collection: 'users';
   };

@@ -44,6 +44,7 @@ export const BlogPage: GlobalConfig = {
           name: 'metaTitle',
           type: 'text',
           label: 'Meta-Titel',
+          localized: true,
           admin: {
             description: 'Überschreibt den Seitentitel für Suchmaschinen (max. 60 Zeichen)',
           },
@@ -52,6 +53,7 @@ export const BlogPage: GlobalConfig = {
           name: 'metaDescription',
           type: 'textarea',
           label: 'Meta-Beschreibung',
+          localized: true,
           admin: {
             description: 'Beschreibung für Suchmaschinen (max. 160 Zeichen)',
           },

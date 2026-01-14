@@ -19,6 +19,7 @@ export const BlogPosts: CollectionConfig = {
       type: 'text',
       label: 'Titel',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -34,6 +35,7 @@ export const BlogPosts: CollectionConfig = {
       name: 'excerpt',
       type: 'textarea',
       label: 'Kurzfassung',
+      localized: true,
       admin: {
         description: 'Kurze Zusammenfassung für Vorschau (max. 200 Zeichen)',
       },
@@ -43,6 +45,7 @@ export const BlogPosts: CollectionConfig = {
       type: 'richText',
       label: 'Inhalt',
       required: true,
+      localized: true,
     },
     {
       name: 'featuredImage',
@@ -99,6 +102,7 @@ export const BlogPosts: CollectionConfig = {
           name: 'metaTitle',
           type: 'text',
           label: 'Meta-Titel',
+          localized: true,
           admin: {
             description: 'Überschreibt den Seitentitel für Suchmaschinen (max. 60 Zeichen)',
           },
@@ -107,6 +111,7 @@ export const BlogPosts: CollectionConfig = {
           name: 'metaDescription',
           type: 'textarea',
           label: 'Meta-Beschreibung',
+          localized: true,
           admin: {
             description: 'Beschreibung für Suchmaschinen (max. 160 Zeichen)',
           },

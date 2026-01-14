@@ -161,12 +161,14 @@ export const TeamPage: GlobalConfig = {
           type: 'text',
           label: 'Meta Title',
           maxLength: 60,
+          localized: true,
         },
         {
           name: 'metaDescription',
           type: 'textarea',
           label: 'Meta Description',
           maxLength: 160,
+          localized: true,
         },
         {
           name: 'ogImage',
