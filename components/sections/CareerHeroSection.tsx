@@ -8,10 +8,13 @@ interface CareerHeroSectionProps {
   backgroundImage?: string;
 }
 
+// Unsplash CDN URL for hero image (Photo by Vitaly Gariev - team collaboration)
+const UNSPLASH_HERO_URL = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80&fit=crop';
+
 export default function CareerHeroSection({
   title,
   subtitle,
-  backgroundImage = '/api/media/file/karriere-hero-1.jpg',
+  backgroundImage = UNSPLASH_HERO_URL,
 }: CareerHeroSectionProps) {
   return (
     <section className="relative min-h-[60vh] lg:min-h-[70vh] overflow-hidden">
