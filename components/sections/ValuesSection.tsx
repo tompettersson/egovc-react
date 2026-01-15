@@ -80,7 +80,7 @@ export default function ValuesSection({
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header - Left aligned, editorial style */}
         <div className="max-w-3xl mb-16">
-          <p className="text-[var(--egovc-teal)] font-semibold tracking-widest uppercase text-sm mb-4">
+          <p className="text-[var(--egovc-dark)] font-semibold tracking-widest uppercase text-sm mb-4">
             Unsere Prinzipien
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[var(--egovc-dark)] mb-6 leading-tight">
