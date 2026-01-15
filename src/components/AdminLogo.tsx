@@ -36,7 +36,8 @@ export const AdminLogo: React.FC = () => {
 }
 
 /**
- * EGovC Icon for Payload Admin Nav (smaller version)
+ * EGovC Icon for Payload Admin Nav (favicon-style)
+ * Just the "E" - three horizontal bars
  * Uses currentColor for automatic dark/light mode support
  */
 export const AdminIcon: React.FC = () => {
@@ -45,15 +46,13 @@ export const AdminIcon: React.FC = () => {
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
-      viewBox="0 0 105 105"
+      viewBox="0 0 52 67"
       fill="currentColor"
     >
-      {/* E simplified for icon */}
+      {/* E - three horizontal bars */}
       <path d="M0 0H52V11H0V0Z" />
       <path d="M0 28H52V39H0V28Z" />
       <path d="M0 56H52V67H0V56Z" />
-      {/* G simplified for icon */}
-      <path d="M58 0C80 0 98 18 98 40C98 62 80 80 58 80C48 80 39 76 32 70L42 58C47 62 52 64 58 64C71 64 82 53 82 40C82 27 71 16 58 16C52 16 47 18 42 22L32 10C39 4 48 0 58 0Z" />
     </svg>
   )
 }
