@@ -42,17 +42,20 @@ export const AdminLogo: React.FC = () => {
  */
 export const AdminIcon: React.FC = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 52 67"
-      fill="currentColor"
-    >
-      {/* E - three horizontal bars */}
-      <path d="M0 0H52V11H0V0Z" />
-      <path d="M0 28H52V39H0V28Z" />
-      <path d="M0 56H52V67H0V56Z" />
-    </svg>
+    <div style={{ width: '16px', height: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 52 67"
+        fill="currentColor"
+        style={{ maxWidth: '16px', maxHeight: '16px' }}
+      >
+        {/* E - three horizontal bars */}
+        <path d="M0 0H52V11H0V0Z" />
+        <path d="M0 28H52V39H0V28Z" />
+        <path d="M0 56H52V67H0V56Z" />
+      </svg>
+    </div>
   )
 }
