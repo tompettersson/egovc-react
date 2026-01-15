@@ -8,15 +8,15 @@ export default function HeroSection({
   subtitle = 'Wir unterstützen Sie bei der ganzheitlichen digitalen Transformation und bei der operativen und technischen Umsetzung der Leistungsdigitalisierung.'
 }: HeroSectionProps) {
   return (
-    <section className="relative min-h-[600px] bg-[var(--egovc-dark)] text-white overflow-hidden">
+    <section className="relative min-h-[600px] bg-[var(--egovc-dark)] text-white overflow-hidden flex items-center">
       {/* Background Image */}
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--egovc-dark)] via-gray-900 to-[var(--egovc-dark)] opacity-90">
         <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-30"></div>
       </div>
 
       {/* Vertically centered content container */}
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 min-h-[600px] flex items-center">
-        <div className="max-w-4xl py-16">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8">
+        <div className="max-w-4xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             {title.split('\n').map((line, i) => (
               <span key={i}>
