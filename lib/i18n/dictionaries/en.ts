@@ -234,6 +234,10 @@ export const en: Dictionary = {
 
   // Career Page
   career: {
+    hero: {
+      title: 'Shape the Future\nWith Us',
+      subtitle: 'Join a team that is driving digital transformation in the public sector.',
+    },
     intro: {
       title: 'What Sets Us Apart',
       paragraphs: [

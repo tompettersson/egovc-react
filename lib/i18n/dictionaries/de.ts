@@ -232,6 +232,10 @@ export const de = {
 
   // Career Page
   career: {
+    hero: {
+      title: 'Gestalten Sie mit uns\ndie Zukunft',
+      subtitle: 'Werden Sie Teil eines Teams, das die digitale Transformation im öffentlichen Sektor vorantreibt.',
+    },
     intro: {
       title: 'Was zeichnet uns aus',
       paragraphs: [
@@ -498,6 +502,10 @@ export interface Dictionary {
     goToSlide: string;
   };
   career: {
+    hero: {
+      title: string;
+      subtitle: string;
+    };
     intro: {
       title: string;
       paragraphs: string[];

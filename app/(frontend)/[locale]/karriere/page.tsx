@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import CareerHeroSection from '@/components/sections/CareerHeroSection';
 import IntroSection from '@/components/sections/IntroSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import JobOpeningsSection from '@/components/sections/JobOpeningsSection';
@@ -43,6 +44,10 @@ export default async function KarrierePage(props: Props) {
 
   // Use dictionary for localized content, Payload only for non-localized data (job openings)
   const data = {
+    hero: {
+      title: dict.career.hero.title,
+      subtitle: dict.career.hero.subtitle,
+    },
     intro: {
       title: dict.career.intro.title,
       description: dict.career.intro.paragraphs.join('\n\n'),
@@ -70,6 +75,10 @@ export default async function KarrierePage(props: Props) {
 
   return (
     <>
+      <CareerHeroSection
+        title={data.hero.title}
+        subtitle={data.hero.subtitle}
+      />
       <IntroSection
         title={data.intro.title}
         description={data.intro.description}
