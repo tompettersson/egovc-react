@@ -14,8 +14,9 @@ export default function HeroSection({
         <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-30"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 py-20">
-        <div className="max-w-4xl">
+      {/* Vertically centered content container */}
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 min-h-[600px] flex items-center">
+        <div className="max-w-4xl py-16">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             {title.split('\n').map((line, i) => (
               <span key={i}>

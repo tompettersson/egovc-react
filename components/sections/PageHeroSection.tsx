@@ -26,8 +26,9 @@ export default function PageHeroSection({
         <div className="absolute inset-0 bg-gradient-to-br from-[var(--egovc-dark)] via-gray-900 to-[var(--egovc-dark)] opacity-90"></div>
       )}
 
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 py-20">
-        <div className="max-w-4xl">
+      {/* Vertically centered content container */}
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 min-h-[500px] flex items-center">
+        <div className="max-w-4xl py-16">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             {title.split("\n").map((line, i) => (
               <span key={i}>
