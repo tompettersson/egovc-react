@@ -55,7 +55,7 @@ export default function CaseStudiesSection({ items }: CaseStudiesSectionProps) {
               </div>
               <h2 className="text-2xl font-bold mb-4 text-[var(--egovc-dark)]">{study.title}</h2>
               <div className="w-24 h-1 bg-[var(--egovc-pink)] mb-4"></div>
-              <p className="text-sm font-semibold text-[var(--egovc-pink)] mb-4">{study.hashtags}</p>
+              <p className="text-sm font-medium text-gray-500 mb-4">{study.hashtags}</p>
               <p className="text-gray-600 leading-relaxed">{study.description}</p>
             </div>
           ))}
