@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'set-blog-hero') {
-      // Blog-Page Hero-Hintergrundbild setzen - via direktem SQL wegen Payload Query-Bug
+      // Blog-Page Hero-Hintergrundbild setzen - via direktem SQL
       try {
         const db = (payload as any).db
         const pool = db?.pool
@@ -59,7 +59,21 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ error: 'Pool not available' }, { status: 500 })
         }
 
-        // Setze hero_background_image_id direkt via SQL
+        // Prüfe ob Spalte existiert
+        const columnCheck = await pool.query(`
+          SELECT column_name FROM information_schema.columns
+          WHERE table_name = 'blog_page' AND column_name = 'hero_background_image_id'
+        `)
+
+        // Falls Spalte fehlt, füge sie hinzu (Migration nachholen)
+        if (columnCheck.rows.length === 0) {
+          await pool.query(`
+            ALTER TABLE blog_page
+            ADD COLUMN hero_background_image_id integer REFERENCES media(id)
+          `)
+        }
+
+        // Setze hero_background_image_id
         const updateResult = await pool.query(`
           UPDATE blog_page
           SET hero_background_image_id = 90, updated_at = NOW()
@@ -78,6 +92,7 @@ export async function POST(request: NextRequest) {
           success: true,
           message: 'Blog-Hero-Hintergrundbild gesetzt via SQL',
           updatedRow: updateResult.rows[0],
+          columnCreated: columnCheck.rows.length === 0,
         })
       } catch (err) {
         console.error('Set blog hero error:', err)
