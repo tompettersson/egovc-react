@@ -107,11 +107,35 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   // Debug: Check if Vercel Blob token is available
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN
   const tokenAvailable = !!blobToken
   const tokenPrefix = blobToken ? blobToken.substring(0, 20) + '...' : 'NOT SET'
+
+  // Extract store ID from token
+  const storeId = blobToken?.match(/^vercel_blob_rw_([a-z\d]+)_[a-z\d]+$/i)?.[1]?.toLowerCase()
+  const baseUrl = storeId ? `https://${storeId}.public.blob.vercel-storage.com` : 'NOT_AVAILABLE'
+
+  // Check if action=list-blobs is requested
+  const { searchParams } = new URL(request.url)
+  if (searchParams.get('action') === 'list-blobs' && blobToken) {
+    try {
+      const { list } = await import('@vercel/blob')
+      const result = await list({ token: blobToken })
+      return NextResponse.json({
+        blobs: result.blobs.slice(0, 20).map(b => ({
+          pathname: b.pathname,
+          size: b.size,
+          uploadedAt: b.uploadedAt,
+        })),
+        hasMore: result.hasMore,
+        cursor: result.cursor,
+      })
+    } catch (error) {
+      return NextResponse.json({ error: String(error) }, { status: 500 })
+    }
+  }
 
   return NextResponse.json({
     info: 'POST mit Authorization: Bearer YOUR_SECRET und body: {"action": "upload-blog-images"}',
@@ -119,7 +143,10 @@ export async function GET() {
     debug: {
       blobTokenAvailable: tokenAvailable,
       blobTokenPrefix: tokenPrefix,
+      storeId,
+      baseUrl,
       nodeEnv: process.env.NODE_ENV,
-    }
+    },
+    listBlobsUrl: '/api/seed-media?action=list-blobs',
   })
 }
