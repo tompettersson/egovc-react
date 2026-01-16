@@ -81,9 +81,8 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'init-blog-page') {
-      // Initialisiere blog_page Global via direktem SQL Insert
+      // Initialisiere blog_page Global via direktem SQL
       try {
-        // Payload 3.x postgres adapter: Zugriff auf den Pool
         const db = (payload as any).db
         const pool = db?.pool
 
@@ -94,35 +93,90 @@ export async function POST(request: NextRequest) {
           }, { status: 500 })
         }
 
-        // Prüfe zuerst ob bereits ein Eintrag existiert
-        const checkResult = await pool.query('SELECT id FROM blog_page LIMIT 1')
-
-        if (checkResult.rows && checkResult.rows.length > 0) {
-          return NextResponse.json({
-            success: true,
-            message: 'blog_page existiert bereits',
-            existingId: checkResult.rows[0].id,
-          })
-        }
-
-        // Erstelle initialen Eintrag
-        const insertResult = await pool.query(`
-          INSERT INTO blog_page (id, hero_title, hero_subtitle, intro, created_at, updated_at)
-          VALUES (1, 'Blog', 'Neuigkeiten und Einblicke aus der digitalen Transformation',
-          'Erfahren Sie mehr über aktuelle Entwicklungen in der Digitalisierung.',
-          NOW(), NOW())
-          ON CONFLICT (id) DO NOTHING
-          RETURNING id
+        // Prüfe ob blog_page_locales Tabelle existiert
+        const tablesResult = await pool.query(`
+          SELECT table_name FROM information_schema.tables
+          WHERE table_schema = 'public' AND table_name LIKE 'blog_page%'
         `)
+
+        const tables = tablesResult.rows.map((r: any) => r.table_name)
+
+        // Prüfe blog_page Eintrag
+        const checkResult = await pool.query('SELECT * FROM blog_page LIMIT 1')
+        const blogPageRow = checkResult.rows[0]
+
+        // Prüfe blog_page_locales Einträge
+        let localesRows: any[] = []
+        if (tables.includes('blog_page_locales')) {
+          const localesResult = await pool.query('SELECT * FROM blog_page_locales LIMIT 5')
+          localesRows = localesResult.rows
+        }
 
         return NextResponse.json({
           success: true,
-          message: 'blog_page initialisiert',
-          insertedId: insertResult.rows?.[0]?.id,
+          tables,
+          blogPageRow,
+          localesRows,
+          hint: 'If blog_page_locales is empty or missing, run Payload migrations',
         })
       } catch (err) {
         return NextResponse.json({
           error: 'Init failed',
+          details: String(err),
+        }, { status: 500 })
+      }
+    }
+
+    if (action === 'fix-blog-page-locales') {
+      // Erstelle fehlenden Eintrag in blog_page_locales
+      try {
+        const db = (payload as any).db
+        const pool = db?.pool
+
+        if (!pool) {
+          return NextResponse.json({ error: 'Pool not available' }, { status: 500 })
+        }
+
+        // Prüfe ob blog_page_locales Tabelle existiert
+        const tablesResult = await pool.query(`
+          SELECT table_name FROM information_schema.tables
+          WHERE table_schema = 'public' AND table_name = 'blog_page_locales'
+        `)
+
+        if (tablesResult.rows.length === 0) {
+          return NextResponse.json({
+            error: 'blog_page_locales table does not exist',
+            hint: 'Run Payload migrations: npx payload migrate',
+          }, { status: 500 })
+        }
+
+        // Prüfe ob bereits Locale-Einträge existieren
+        const localesCheck = await pool.query('SELECT * FROM blog_page_locales WHERE _parent_id = 1 LIMIT 1')
+
+        if (localesCheck.rows.length > 0) {
+          return NextResponse.json({
+            success: true,
+            message: 'Locale entries already exist',
+            locales: localesCheck.rows,
+          })
+        }
+
+        // Erstelle Locale-Einträge für de und en
+        await pool.query(`
+          INSERT INTO blog_page_locales (_parent_id, _locale, seo_meta_title, seo_meta_description)
+          VALUES
+            (1, 'de', 'Blog | EGovC', 'Neuigkeiten und Einblicke aus der digitalen Transformation'),
+            (1, 'en', 'Blog | EGovC', 'News and insights from digital transformation')
+          ON CONFLICT DO NOTHING
+        `)
+
+        return NextResponse.json({
+          success: true,
+          message: 'Locale entries created',
+        })
+      } catch (err) {
+        return NextResponse.json({
+          error: 'Fix locales failed',
           details: String(err),
         }, { status: 500 })
       }
