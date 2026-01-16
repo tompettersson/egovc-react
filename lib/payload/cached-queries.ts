@@ -5,9 +5,15 @@ import type { Reference } from '@/components/sections/ReferencesSection'
 
 /**
  * Cached Payload instance - wiederverwendet innerhalb eines Request-Zyklus
+ * Returns null if database connection fails (e.g., during build time on Vercel)
  */
 export const getCachedPayload = cache(async () => {
-  return getPayload({ config })
+  try {
+    return await getPayload({ config })
+  } catch (error) {
+    console.error('Failed to initialize Payload (database may be unavailable):', error)
+    return null
+  }
 })
 
 /**
@@ -18,6 +24,7 @@ export const getCachedPayload = cache(async () => {
 export const getCachedGlobal = cache(async <T = any>(slug: string, locale: string = 'de'): Promise<T | null> => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return null
     return await (payload as any).findGlobal({
       slug,
       locale,
@@ -36,6 +43,7 @@ export const getCachedGlobal = cache(async <T = any>(slug: string, locale: strin
 export const getCachedSectorPage = cache(async (slug: string) => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return null
     const result = await (payload as any).find({
       collection: 'sector-pages',
       where: { slug: { equals: slug } },
@@ -56,6 +64,7 @@ export const getCachedSectorPage = cache(async (slug: string) => {
 export const getCachedBlogPost = cache(async (slug: string, locale: string = 'de') => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return null
     const result = await (payload as any).find({
       collection: 'blog-posts',
       where: { slug: { equals: slug } },
@@ -78,6 +87,7 @@ export const getCachedBlogPost = cache(async (slug: string, locale: string = 'de
 export const getCachedBlogPosts = cache(async (limit = 100, locale: string = 'de') => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return { docs: [] }
     return await (payload as any).find({
       collection: 'blog-posts',
       limit,
@@ -98,6 +108,7 @@ export const getCachedBlogPosts = cache(async (limit = 100, locale: string = 'de
 export const getCachedReferences = cache(async (locale: string = 'de'): Promise<Reference[]> => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return []
     const result = await (payload as any).find({
       collection: 'references',
       sort: 'order',
@@ -130,6 +141,7 @@ export const getCachedReferences = cache(async (locale: string = 'de'): Promise<
 export const getCachedWhitepapers = cache(async (locale: string = 'de') => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return { docs: [] }
     return await (payload as any).find({
       collection: 'whitepapers',
       limit: 100,
@@ -162,6 +174,7 @@ export interface LegalPagesData {
 export const getCachedLegalPages = cache(async (locale: string = 'de'): Promise<LegalPagesData | null> => {
   try {
     const payload = await getCachedPayload()
+    if (!payload) return null
     return await (payload as any).findGlobal({
       slug: 'legal-pages',
       locale,
