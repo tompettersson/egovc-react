@@ -92,10 +92,14 @@ export async function POST(request: NextRequest) {
         access: 'public',
         contentType: 'image/jpeg',
         token: blobToken,
+        addRandomSuffix: true, // Verhindert Konflikte bei existierenden Dateien
       })
       console.log(`✅ Blob uploaded: ${blob.url}`)
 
       // 3. Payload Media-Eintrag erstellen mit Blob-URL
+      // Extrahiere echten Dateinamen aus Blob-URL (hat Random-Suffix)
+      const blobFilename = blob.pathname.split('/').pop() || image.filename
+
       // Wir setzen die URL direkt, da wir den Cloud Storage Adapter umgehen
       const mediaDoc = await payload.create({
         collection: 'media',
@@ -103,7 +107,7 @@ export async function POST(request: NextRequest) {
           alt: image.alt,
           // Diese Felder werden normalerweise vom Upload-Prozess gesetzt
           // Wir setzen sie manuell, da wir den direkten Blob-Upload nutzen
-          filename: image.filename,
+          filename: blobFilename,
           mimeType: 'image/jpeg',
           filesize: imageBuffer.byteLength,
           width: image.width,
