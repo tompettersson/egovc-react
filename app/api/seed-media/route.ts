@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
       }
 
       const imageBuffer = await imageResponse.arrayBuffer()
+      // Payload File type uses: data, mimetype, name
+      // Cloud storage adapters internally transform to: buffer, mimeType, filename
       const file = {
         data: Buffer.from(imageBuffer),
         mimetype: 'image/jpeg',
@@ -106,8 +108,18 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  // Debug: Check if Vercel Blob token is available
+  const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+  const tokenAvailable = !!blobToken
+  const tokenPrefix = blobToken ? blobToken.substring(0, 20) + '...' : 'NOT SET'
+
   return NextResponse.json({
     info: 'POST mit Authorization: Bearer YOUR_SECRET und body: {"action": "upload-blog-images"}',
     images: BLOG_IMAGES.map(img => ({ filename: img.filename, alt: img.alt })),
+    debug: {
+      blobTokenAvailable: tokenAvailable,
+      blobTokenPrefix: tokenPrefix,
+      nodeEnv: process.env.NODE_ENV,
+    }
   })
 }
