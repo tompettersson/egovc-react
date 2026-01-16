@@ -83,18 +83,19 @@ export async function POST(request: NextRequest) {
     if (action === 'init-blog-page') {
       // Initialisiere blog_page Global via direktem SQL Insert
       try {
-        // Payload 3.x postgres adapter: Zugriff auf Drizzle via payload.db.drizzle
-        const drizzle = (payload as any).db?.drizzle
+        // Payload 3.x postgres adapter: Zugriff auf den Pool
+        const db = (payload as any).db
+        const pool = db?.pool
 
-        if (!drizzle) {
+        if (!pool) {
           return NextResponse.json({
-            error: 'Drizzle not available',
-            dbKeys: Object.keys((payload as any).db || {}),
+            error: 'Pool not available',
+            dbKeys: Object.keys(db || {}),
           }, { status: 500 })
         }
 
         // Prüfe zuerst ob bereits ein Eintrag existiert
-        const checkResult = await drizzle.execute`SELECT id FROM blog_page LIMIT 1`
+        const checkResult = await pool.query('SELECT id FROM blog_page LIMIT 1')
 
         if (checkResult.rows && checkResult.rows.length > 0) {
           return NextResponse.json({
@@ -105,19 +106,19 @@ export async function POST(request: NextRequest) {
         }
 
         // Erstelle initialen Eintrag
-        const insertResult = await drizzle.execute`
+        const insertResult = await pool.query(`
           INSERT INTO blog_page (id, hero_title, hero_subtitle, intro, created_at, updated_at)
           VALUES (1, 'Blog', 'Neuigkeiten und Einblicke aus der digitalen Transformation',
           'Erfahren Sie mehr über aktuelle Entwicklungen in der Digitalisierung.',
           NOW(), NOW())
           ON CONFLICT (id) DO NOTHING
           RETURNING id
-        `
+        `)
 
         return NextResponse.json({
           success: true,
           message: 'blog_page initialisiert',
-          result: insertResult,
+          insertedId: insertResult.rows?.[0]?.id,
         })
       } catch (err) {
         return NextResponse.json({
