@@ -81,17 +81,38 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'init-blog-page') {
-      // Initialisiere blog_page Global falls es nicht existiert
+      // Initialisiere blog_page Global via direktem SQL Insert
       try {
-        // findGlobal erstellt den Eintrag automatisch bei Payload
-        const existing = await payload.findGlobal({
-          slug: 'blog-page',
+        // Verwende Drizzle für direkten SQL-Zugriff
+        const db = (payload as any).db
+
+        // Prüfe zuerst ob bereits ein Eintrag existiert
+        const checkResult = await db.execute({
+          sql: `SELECT id FROM blog_page LIMIT 1`,
+        })
+
+        if (checkResult.rows && checkResult.rows.length > 0) {
+          return NextResponse.json({
+            success: true,
+            message: 'blog_page existiert bereits',
+            existingId: checkResult.rows[0].id,
+          })
+        }
+
+        // Erstelle initialen Eintrag
+        const insertResult = await db.execute({
+          sql: `INSERT INTO blog_page (id, hero_title, hero_subtitle, intro, created_at, updated_at)
+                VALUES (1, 'Blog', 'Neuigkeiten und Einblicke aus der digitalen Transformation',
+                'Erfahren Sie mehr über aktuelle Entwicklungen in der Digitalisierung.',
+                NOW(), NOW())
+                ON CONFLICT (id) DO NOTHING
+                RETURNING id`,
         })
 
         return NextResponse.json({
           success: true,
-          message: 'blog_page Global gefunden/initialisiert',
-          data: existing,
+          message: 'blog_page initialisiert',
+          result: insertResult,
         })
       } catch (err) {
         return NextResponse.json({
