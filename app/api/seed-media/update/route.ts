@@ -50,26 +50,34 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'set-blog-hero') {
-      // Blog-Page Hero-Hintergrundbild setzen
+      // Blog-Page Hero-Hintergrundbild setzen - via direktem SQL wegen Payload Query-Bug
       try {
-        // Payload updateGlobal erstellt den Eintrag automatisch falls er nicht existiert
-        const blogPage = await payload.updateGlobal({
-          slug: 'blog-page',
-          data: {
-            hero: {
-              title: 'Blog',
-              subtitle: 'Neuigkeiten und Einblicke aus der digitalen Transformation',
-              backgroundImage: 90,
-            },
-            intro: 'Erfahren Sie mehr über aktuelle Entwicklungen in der Digitalisierung der öffentlichen Verwaltung, des Gesundheitswesens und kirchlicher Organisationen.',
-          },
-        })
+        const db = (payload as any).db
+        const pool = db?.pool
+
+        if (!pool) {
+          return NextResponse.json({ error: 'Pool not available' }, { status: 500 })
+        }
+
+        // Setze hero_background_image_id direkt via SQL
+        const updateResult = await pool.query(`
+          UPDATE blog_page
+          SET hero_background_image_id = 90, updated_at = NOW()
+          WHERE id = 1
+          RETURNING id, hero_background_image_id
+        `)
+
+        if (updateResult.rows.length === 0) {
+          return NextResponse.json({
+            error: 'No rows updated',
+            hint: 'blog_page entry might not exist',
+          }, { status: 500 })
+        }
 
         return NextResponse.json({
           success: true,
-          message: 'Blog-Hero-Hintergrundbild gesetzt',
-          backgroundImage: blogPage.hero?.backgroundImage,
-          heroData: blogPage.hero,
+          message: 'Blog-Hero-Hintergrundbild gesetzt via SQL',
+          updatedRow: updateResult.rows[0],
         })
       } catch (err) {
         console.error('Set blog hero error:', err)
