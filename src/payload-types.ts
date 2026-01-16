@@ -988,6 +988,10 @@ export interface BlogPage {
   hero?: {
     title?: string | null;
     subtitle?: string | null;
+    /**
+     * Hintergrundbild für den Hero-Bereich
+     */
+    backgroundImage?: (number | null) | Media;
   };
   intro?: string | null;
   seo?: {
@@ -1422,6 +1426,7 @@ export interface BlogPageSelect<T extends boolean = true> {
     | {
         title?: T;
         subtitle?: T;
+        backgroundImage?: T;
       };
   intro?: T;
   seo?:

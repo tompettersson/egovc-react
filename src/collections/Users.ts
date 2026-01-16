@@ -5,7 +5,10 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
-  auth: true,
+  auth: {
+    // API-Keys für automatisierte API-Zugriffe (Uploads, Content-Management)
+    useAPIKey: true,
+  },
   fields: [
     // Email added by default
     // Add more fields as needed
