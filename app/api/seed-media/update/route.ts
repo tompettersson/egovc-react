@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'init-blog-page') {
-      // Initialisiere blog_page Global via direktem SQL
+      // Zeige blog_page Tabellenstruktur
       try {
         const db = (payload as any).db
         const pool = db?.pool
@@ -101,31 +101,25 @@ export async function POST(request: NextRequest) {
           }, { status: 500 })
         }
 
-        // Prüfe ob blog_page_locales Tabelle existiert
-        const tablesResult = await pool.query(`
-          SELECT table_name FROM information_schema.tables
-          WHERE table_schema = 'public' AND table_name LIKE 'blog_page%'
+        // Hole Spalteninfo für blog_page
+        const columnsResult = await pool.query(`
+          SELECT column_name, data_type, is_nullable
+          FROM information_schema.columns
+          WHERE table_schema = 'public' AND table_name = 'blog_page'
+          ORDER BY ordinal_position
         `)
 
-        const tables = tablesResult.rows.map((r: any) => r.table_name)
+        const columns = columnsResult.rows
 
         // Prüfe blog_page Eintrag
         const checkResult = await pool.query('SELECT * FROM blog_page LIMIT 1')
         const blogPageRow = checkResult.rows[0]
 
-        // Prüfe blog_page_locales Einträge
-        let localesRows: any[] = []
-        if (tables.includes('blog_page_locales')) {
-          const localesResult = await pool.query('SELECT * FROM blog_page_locales LIMIT 5')
-          localesRows = localesResult.rows
-        }
-
         return NextResponse.json({
           success: true,
-          tables,
+          columns,
           blogPageRow,
-          localesRows,
-          hint: 'If blog_page_locales is empty or missing, run Payload migrations',
+          hint: 'Look for the backgroundImage column name',
         })
       } catch (err) {
         return NextResponse.json({
