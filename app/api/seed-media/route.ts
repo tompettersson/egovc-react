@@ -1,5 +1,8 @@
 /**
- * API Route zum Hochladen von Media-Dateien via Payload Local API
+ * API Route zum Hochladen von Media-Dateien via direktem Vercel Blob Upload
+ *
+ * Workaround: Payload's Local API triggert Cloud Storage Upload nicht korrekt.
+ * Lösung: Erst direkt zu Vercel Blob hochladen, dann Payload Media-Eintrag erstellen.
  *
  * Nutzung:
  * curl -X POST https://egovc-react.vercel.app/api/seed-media \
@@ -11,6 +14,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { put } from '@vercel/blob'
 
 const SEED_SECRET = process.env.SEED_SECRET || 'egovc-seed-2026'
 
@@ -20,21 +24,29 @@ const BLOG_IMAGES = [
     url: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80',
     alt: 'Drei Geschäftsleute bei einer Besprechung im Büro',
     filename: 'blog-european-1.jpg',
+    width: 1200,
+    height: 800,
   },
   {
     url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80',
     alt: 'Team arbeitet gemeinsam am Laptop',
     filename: 'blog-european-2.jpg',
+    width: 1200,
+    height: 800,
   },
   {
     url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&q=80',
     alt: 'Zwei Kollegen diskutieren am MacBook',
     filename: 'blog-european-3.jpg',
+    width: 1200,
+    height: 800,
   },
   {
     url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
     alt: 'Modernes Büro für digitale Transformation',
     filename: 'blog-hero-background.jpg',
+    width: 1920,
+    height: 1080,
   },
 ]
 
@@ -53,13 +65,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unknown action' }, { status: 400 })
     }
 
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+    if (!blobToken) {
+      return NextResponse.json({ error: 'BLOB_READ_WRITE_TOKEN not configured' }, { status: 500 })
+    }
+
     const payload = await getPayload({ config })
-    const results: Array<{ id: number; filename: string; url: string }> = []
+    const results: Array<{ id: number; filename: string; url: string; blobUrl: string }> = []
 
     for (const image of BLOG_IMAGES) {
       console.log(`📤 Lade ${image.filename} von Unsplash...`)
 
-      // Bild von Unsplash herunterladen
+      // 1. Bild von Unsplash herunterladen
       const imageResponse = await fetch(image.url)
       if (!imageResponse.ok) {
         console.error(`❌ Fehler beim Download: ${image.url}`)
@@ -67,29 +84,40 @@ export async function POST(request: NextRequest) {
       }
 
       const imageBuffer = await imageResponse.arrayBuffer()
-      // Payload File type uses: data, mimetype, name
-      // Cloud storage adapters internally transform to: buffer, mimeType, filename
-      const file = {
-        data: Buffer.from(imageBuffer),
-        mimetype: 'image/jpeg',
-        name: image.filename,
-        size: imageBuffer.byteLength,
-      }
+      console.log(`📦 Heruntergeladen: ${image.filename} (${imageBuffer.byteLength} bytes)`)
 
-      // In Payload Media Collection hochladen
+      // 2. Direkt zu Vercel Blob hochladen
+      console.log(`☁️ Uploading to Vercel Blob: ${image.filename}`)
+      const blob = await put(image.filename, imageBuffer, {
+        access: 'public',
+        contentType: 'image/jpeg',
+        token: blobToken,
+      })
+      console.log(`✅ Blob uploaded: ${blob.url}`)
+
+      // 3. Payload Media-Eintrag erstellen mit Blob-URL
+      // Wir setzen die URL direkt, da wir den Cloud Storage Adapter umgehen
       const mediaDoc = await payload.create({
         collection: 'media',
         data: {
           alt: image.alt,
+          // Diese Felder werden normalerweise vom Upload-Prozess gesetzt
+          // Wir setzen sie manuell, da wir den direkten Blob-Upload nutzen
+          filename: image.filename,
+          mimeType: 'image/jpeg',
+          filesize: imageBuffer.byteLength,
+          width: image.width,
+          height: image.height,
+          url: blob.url,
         },
-        file,
       })
 
-      console.log(`✅ Hochgeladen: ${mediaDoc.filename} (ID: ${mediaDoc.id})`)
+      console.log(`✅ Payload Media erstellt: ${mediaDoc.id}`)
       results.push({
         id: mediaDoc.id as number,
-        filename: mediaDoc.filename as string,
+        filename: image.filename,
         url: mediaDoc.url as string,
+        blobUrl: blob.url,
       })
     }
 
