@@ -49,18 +49,20 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'set-blog-hero') {
-      // Blog-Page Hero-Hintergrundbild setzen
+      // Blog-Page Hero-Hintergrundbild setzen (nested in hero object)
       const blogPage = await payload.updateGlobal({
         slug: 'blog-page',
         data: {
-          backgroundImage: 86, // blog-hero-background.jpg
+          hero: {
+            backgroundImage: 86, // blog-hero-background.jpg
+          },
         },
       })
 
       return NextResponse.json({
         success: true,
         message: 'Blog-Hero-Hintergrundbild gesetzt',
-        backgroundImage: blogPage.backgroundImage,
+        backgroundImage: blogPage.hero?.backgroundImage,
       })
     }
 
