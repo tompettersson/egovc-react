@@ -45,9 +45,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const blogPosts = await payload.find({
       collection: 'blog-posts',
-      where: {
-        status: { equals: 'published' },
-      },
       limit: 1000,
     })
 
