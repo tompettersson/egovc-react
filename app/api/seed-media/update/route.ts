@@ -51,25 +51,17 @@ export async function POST(request: NextRequest) {
 
     if (action === 'set-blog-hero') {
       // Blog-Page Hero-Hintergrundbild setzen
-      // Neue ID nach direktem Vercel Blob Upload
       try {
-        // Erst versuchen das Global zu lesen um zu sehen ob es existiert
-        const existingBlogPage = await payload.findGlobal({
-          slug: 'blog-page',
-        }).catch(() => null)
-
-        console.log('Existing blog_page:', JSON.stringify(existingBlogPage, null, 2))
-
-        // Update mit allen erforderlichen Hero-Feldern
+        // Payload updateGlobal erstellt den Eintrag automatisch falls er nicht existiert
         const blogPage = await payload.updateGlobal({
           slug: 'blog-page',
           data: {
             hero: {
-              title: existingBlogPage?.hero?.title || 'Blog',
-              subtitle: existingBlogPage?.hero?.subtitle || 'Neuigkeiten und Einblicke',
-              backgroundImage: 90, // blog-hero-background.jpg
+              title: 'Blog',
+              subtitle: 'Neuigkeiten und Einblicke aus der digitalen Transformation',
+              backgroundImage: 90,
             },
-            intro: existingBlogPage?.intro || 'Erfahren Sie mehr über aktuelle Entwicklungen...',
+            intro: 'Erfahren Sie mehr über aktuelle Entwicklungen in der Digitalisierung der öffentlichen Verwaltung, des Gesundheitswesens und kirchlicher Organisationen.',
           },
         })
 
@@ -83,6 +75,27 @@ export async function POST(request: NextRequest) {
         console.error('Set blog hero error:', err)
         return NextResponse.json({
           error: 'Failed to set blog hero',
+          details: String(err),
+        }, { status: 500 })
+      }
+    }
+
+    if (action === 'init-blog-page') {
+      // Initialisiere blog_page Global falls es nicht existiert
+      try {
+        // findGlobal erstellt den Eintrag automatisch bei Payload
+        const existing = await payload.findGlobal({
+          slug: 'blog-page',
+        })
+
+        return NextResponse.json({
+          success: true,
+          message: 'blog_page Global gefunden/initialisiert',
+          data: existing,
+        })
+      } catch (err) {
+        return NextResponse.json({
+          error: 'Init failed',
           details: String(err),
         }, { status: 500 })
       }
