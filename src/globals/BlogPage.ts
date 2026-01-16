@@ -27,6 +27,15 @@ export const BlogPage: GlobalConfig = {
           label: 'Untertitel',
           defaultValue: 'Neuigkeiten und Einblicke aus der digitalen Transformation',
         },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Hintergrundbild',
+          admin: {
+            description: 'Hintergrundbild für den Hero-Bereich',
+          },
+        },
       ],
     },
     {

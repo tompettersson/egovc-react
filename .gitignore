@@ -56,3 +56,4 @@ _archive-sanity/
 # Claude
 .claude/
 .env*.local
+temp-images/

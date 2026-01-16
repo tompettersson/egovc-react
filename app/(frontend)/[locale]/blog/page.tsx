@@ -67,10 +67,17 @@ export default async function BlogPage(props: Props) {
 
   // Use dictionary for localized UI text (hero, intro)
   // Payload data is only for SEO metadata (not localized)
+  const heroBackgroundImage = pageData?.hero?.backgroundImage
+    ? typeof pageData.hero.backgroundImage === 'object'
+      ? pageData.hero.backgroundImage.url
+      : undefined
+    : undefined;
+
   const data = {
     hero: {
       title: dict.blog.title,
       subtitle: dict.blog.subtitle,
+      backgroundImage: heroBackgroundImage,
     },
     intro: dict.blog.intro,
   };
@@ -98,6 +105,7 @@ export default async function BlogPage(props: Props) {
       <PageHeroSection
         title={data.hero.title}
         subtitle={data.hero.subtitle}
+        backgroundImage={data.hero.backgroundImage}
       />
 
       {/* Intro Section */}

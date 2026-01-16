@@ -10,7 +10,7 @@ export default function PageHeroSection({
   backgroundImage,
 }: PageHeroSectionProps) {
   return (
-    <section className="relative min-h-[500px] bg-[var(--egovc-dark)] text-white overflow-hidden flex items-center">
+    <section className="relative min-h-[600px] bg-[var(--egovc-dark)] text-white overflow-hidden flex items-center">
       {/* Background Image */}
       {backgroundImage && (
         <div className="absolute inset-0">
@@ -27,7 +27,7 @@ export default function PageHeroSection({
       )}
 
       {/* Vertically centered content container */}
-      <div className="relative z-10 container mx-auto px-4 lg:px-8">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 py-20">
         <div className="max-w-4xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             {title.split("\n").map((line, i) => (
