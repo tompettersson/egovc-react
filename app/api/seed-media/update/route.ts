@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
 
     if (action === 'update-blog-images') {
       // Blog-Posts mit neuen europäischen Bildern aktualisieren
+      // Neue IDs nach direktem Vercel Blob Upload
       const updates = [
-        { postId: 1, imageId: 83 }, // blog-european-1.jpg
-        { postId: 2, imageId: 84 }, // blog-european-2.jpg
-        { postId: 3, imageId: 85 }, // blog-european-3.jpg
+        { postId: 1, imageId: 87 }, // blog-european-1.jpg
+        { postId: 2, imageId: 88 }, // blog-european-2.jpg
+        { postId: 3, imageId: 89 }, // blog-european-3.jpg
       ]
 
       const results = []
@@ -50,11 +51,12 @@ export async function POST(request: NextRequest) {
 
     if (action === 'set-blog-hero') {
       // Blog-Page Hero-Hintergrundbild setzen (nested in hero object)
+      // Neue ID nach direktem Vercel Blob Upload
       const blogPage = await payload.updateGlobal({
         slug: 'blog-page',
         data: {
           hero: {
-            backgroundImage: 86, // blog-hero-background.jpg
+            backgroundImage: 90, // blog-hero-background.jpg
           },
         },
       })
