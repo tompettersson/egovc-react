@@ -50,22 +50,42 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'set-blog-hero') {
-      // Blog-Page Hero-Hintergrundbild setzen (nested in hero object)
+      // Blog-Page Hero-Hintergrundbild setzen
       // Neue ID nach direktem Vercel Blob Upload
-      const blogPage = await payload.updateGlobal({
-        slug: 'blog-page',
-        data: {
-          hero: {
-            backgroundImage: 90, // blog-hero-background.jpg
-          },
-        },
-      })
+      try {
+        // Erst versuchen das Global zu lesen um zu sehen ob es existiert
+        const existingBlogPage = await payload.findGlobal({
+          slug: 'blog-page',
+        }).catch(() => null)
 
-      return NextResponse.json({
-        success: true,
-        message: 'Blog-Hero-Hintergrundbild gesetzt',
-        backgroundImage: blogPage.hero?.backgroundImage,
-      })
+        console.log('Existing blog_page:', JSON.stringify(existingBlogPage, null, 2))
+
+        // Update mit allen erforderlichen Hero-Feldern
+        const blogPage = await payload.updateGlobal({
+          slug: 'blog-page',
+          data: {
+            hero: {
+              title: existingBlogPage?.hero?.title || 'Blog',
+              subtitle: existingBlogPage?.hero?.subtitle || 'Neuigkeiten und Einblicke',
+              backgroundImage: 90, // blog-hero-background.jpg
+            },
+            intro: existingBlogPage?.intro || 'Erfahren Sie mehr über aktuelle Entwicklungen...',
+          },
+        })
+
+        return NextResponse.json({
+          success: true,
+          message: 'Blog-Hero-Hintergrundbild gesetzt',
+          backgroundImage: blogPage.hero?.backgroundImage,
+          heroData: blogPage.hero,
+        })
+      } catch (err) {
+        console.error('Set blog hero error:', err)
+        return NextResponse.json({
+          error: 'Failed to set blog hero',
+          details: String(err),
+        }, { status: 500 })
+      }
     }
 
     return NextResponse.json({ error: 'Unknown action. Use: update-blog-images, set-blog-hero' }, { status: 400 })
