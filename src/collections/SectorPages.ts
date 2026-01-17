@@ -9,6 +9,7 @@ export const SectorPages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'Seiten',
   },
   access: {
     read: () => true,
@@ -19,6 +20,7 @@ export const SectorPages: CollectionConfig = {
       type: 'text',
       label: 'Seitenname',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -27,7 +29,7 @@ export const SectorPages: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
-        description: 'z.B. "verwaltung", "gesundheitswesen", "kirche"',
+        description: 'z.B. "verwaltung", "gesundheitswesen", "kirche" - NICHT lokalisiert',
       },
     },
 
@@ -42,6 +44,7 @@ export const SectorPages: CollectionConfig = {
           type: 'textarea',
           label: 'Titel',
           required: true,
+          localized: true,
           admin: {
             description: 'Kann Zeilenumbrüche enthalten (\\n)',
           },
@@ -50,6 +53,7 @@ export const SectorPages: CollectionConfig = {
           name: 'subtitle',
           type: 'textarea',
           label: 'Untertitel',
+          localized: true,
         },
         {
           name: 'backgroundImage',
@@ -70,16 +74,19 @@ export const SectorPages: CollectionConfig = {
           name: 'title',
           type: 'text',
           label: 'Titel',
+          localized: true,
         },
         {
           name: 'subtitle',
           type: 'text',
           label: 'Untertitel',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
           admin: {
             description: 'Mehrzeilige Beschreibung (\\n\\n für Absätze)',
           },
@@ -98,6 +105,7 @@ export const SectorPages: CollectionConfig = {
           type: 'text',
           label: 'Bereichstitel',
           required: true,
+          localized: true,
         },
         {
           name: 'items',
@@ -109,11 +117,13 @@ export const SectorPages: CollectionConfig = {
               type: 'text',
               label: 'Service-Titel',
               required: true,
+              localized: true,
             },
             {
               name: 'description',
               type: 'textarea',
               label: 'Beschreibung',
+              localized: true,
             },
             {
               name: 'actionType',
@@ -129,6 +139,7 @@ export const SectorPages: CollectionConfig = {
               name: 'actionLabel',
               type: 'text',
               label: 'Button-Text',
+              localized: true,
             },
             {
               name: 'actionUrl',
@@ -150,11 +161,13 @@ export const SectorPages: CollectionConfig = {
           name: 'title',
           type: 'text',
           label: 'Titel',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
         {
           name: 'linkUrl',
@@ -165,6 +178,7 @@ export const SectorPages: CollectionConfig = {
           name: 'linkLabel',
           type: 'text',
           label: 'Link Text',
+          localized: true,
         },
       ],
     },
@@ -180,12 +194,14 @@ export const SectorPages: CollectionConfig = {
           type: 'text',
           label: 'Meta Title',
           maxLength: 60,
+          localized: true,
         },
         {
           name: 'metaDescription',
           type: 'textarea',
           label: 'Meta Description',
           maxLength: 160,
+          localized: true,
         },
         {
           name: 'ogImage',

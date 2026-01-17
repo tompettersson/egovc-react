@@ -6,8 +6,8 @@ import { getCachedGlobal, getCachedBlogPosts } from '@/lib/payload/cached-querie
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { type Locale } from '@/lib/i18n/config';
 
-// Force dynamic rendering to always fetch fresh blog posts from the database
-export const dynamic = 'force-dynamic';
+// ISR: Revalidate blog posts every hour for fresh content with good caching
+export const revalidate = 3600;
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -136,6 +136,7 @@ export default async function BlogPage(props: Props) {
                           src={post.featuredImage.url}
                           alt={post.featuredImage.alt || post.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover"
                         />
                       ) : (

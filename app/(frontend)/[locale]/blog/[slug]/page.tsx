@@ -99,6 +99,7 @@ export default async function BlogPostPage({ params }: Props) {
               src={featuredImageUrl}
               alt={featuredImageAlt || post.title}
               fill
+              sizes="100vw"
               className="object-cover opacity-60"
               priority
             />
@@ -182,7 +183,8 @@ export default async function BlogPostPage({ params }: Props) {
                   href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://egovc.de/${locale}/blog/${post.slug}`)}&title=${encodeURIComponent(post.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#0077B5] text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+                  aria-label={locale === 'de' ? 'Auf LinkedIn teilen (öffnet in neuem Tab)' : 'Share on LinkedIn (opens in new tab)'}
+                  className="bg-[#0077B5] text-white px-4 py-2 rounded hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#0077B5] focus:ring-offset-2"
                 >
                   LinkedIn
                 </a>
@@ -190,7 +192,8 @@ export default async function BlogPostPage({ params }: Props) {
                   href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://egovc.de/${locale}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-black text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+                  aria-label={locale === 'de' ? 'Auf X/Twitter teilen (öffnet in neuem Tab)' : 'Share on X/Twitter (opens in new tab)'}
+                  className="bg-black text-white px-4 py-2 rounded hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                 >
                   X/Twitter
                 </a>

@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const TeamPage: GlobalConfig = {
   slug: 'team-page',
   label: 'Team-Seite',
+  admin: {
+    group: 'Seiten',
+  },
   access: {
     read: () => true,
   },
@@ -18,6 +21,7 @@ export const TeamPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           defaultValue: 'Willkommen bei EGovC – Lernen Sie unser Team kennen',
+          localized: true,
         },
         {
           name: 'paragraphs',
@@ -29,6 +33,7 @@ export const TeamPage: GlobalConfig = {
               type: 'textarea',
               label: 'Text',
               required: true,
+              localized: true,
             },
           ],
         },
@@ -52,6 +57,7 @@ export const TeamPage: GlobalConfig = {
           type: 'text',
           label: 'Rolle',
           required: true,
+          localized: true,
         },
         {
           name: 'image',
@@ -73,11 +79,13 @@ export const TeamPage: GlobalConfig = {
           type: 'text',
           label: 'Abteilungsname',
           required: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
         {
           name: 'email',
@@ -109,12 +117,14 @@ export const TeamPage: GlobalConfig = {
               type: 'text',
               label: 'Titel',
               defaultValue: 'Unsere Werte',
+              localized: true,
             },
             {
               name: 'subtitle',
               type: 'textarea',
               label: 'Untertitel',
               defaultValue: 'Sieben Werte sind der Wind in unseren Segeln,\ndie uns gemeinsam ans Ziel bringen.',
+              localized: true,
             },
           ],
         },
@@ -128,16 +138,19 @@ export const TeamPage: GlobalConfig = {
               type: 'text',
               label: 'Titel',
               required: true,
+              localized: true,
             },
             {
               name: 'subtitle',
               type: 'text',
               label: 'Untertitel',
+              localized: true,
             },
             {
               name: 'description',
               type: 'textarea',
               label: 'Beschreibung',
+              localized: true,
             },
             {
               name: 'icon',

@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const CareerPage: GlobalConfig = {
   slug: 'career-page',
   label: 'Karriere-Seite',
+  admin: {
+    group: 'Seiten',
+  },
   access: {
     read: () => true,
   },
@@ -18,6 +21,7 @@ export const CareerPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           defaultValue: 'Was zeichnet uns aus',
+          localized: true,
         },
         {
           name: 'paragraphs',
@@ -29,6 +33,7 @@ export const CareerPage: GlobalConfig = {
               type: 'textarea',
               label: 'Text',
               required: true,
+              localized: true,
             },
           ],
         },
@@ -46,11 +51,13 @@ export const CareerPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           required: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
         {
           name: 'icon',
@@ -72,11 +79,13 @@ export const CareerPage: GlobalConfig = {
           type: 'textarea',
           label: 'Titel',
           defaultValue: 'Was erwarten\nwir von unseren\nMitarbeitern',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
       ],
     },
@@ -92,21 +101,25 @@ export const CareerPage: GlobalConfig = {
           type: 'text',
           label: 'Jobtitel',
           required: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
         {
           name: 'callToAction',
           type: 'text',
           label: 'Call-to-Action Text',
+          localized: true,
         },
         {
           name: 'additionalText',
           type: 'textarea',
           label: 'Zusätzlicher Text',
+          localized: true,
         },
         {
           name: 'tasks',
@@ -117,6 +130,7 @@ export const CareerPage: GlobalConfig = {
               name: 'task',
               type: 'text',
               label: 'Aufgabe',
+              localized: true,
             },
           ],
         },
@@ -129,6 +143,7 @@ export const CareerPage: GlobalConfig = {
               name: 'requirement',
               type: 'text',
               label: 'Anforderung',
+              localized: true,
             },
           ],
         },
@@ -141,6 +156,7 @@ export const CareerPage: GlobalConfig = {
               name: 'benefit',
               type: 'text',
               label: 'Vorteil',
+              localized: true,
             },
           ],
         },

@@ -39,6 +39,9 @@ export default buildConfig({
         Icon: './components/AdminLogo#AdminIcon',
       },
     },
+    meta: {
+      titleSuffix: ' | EGovC Admin',
+    },
   },
   // Localization for multi-language support (German default, English)
   localization: {

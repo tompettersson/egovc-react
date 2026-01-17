@@ -172,7 +172,18 @@ export interface User {
  */
 export interface Media {
   id: number;
+  /**
+   * Titel des Mediums für interne Identifikation und SEO
+   */
+  title?: string | null;
+  /**
+   * Beschreibender Text für Barrierefreiheit (Screenreader)
+   */
   alt: string;
+  /**
+   * Ausführlichere Beschreibung des Mediums (optional)
+   */
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -219,7 +230,7 @@ export interface SectorPage {
   id: number;
   title: string;
   /**
-   * z.B. "verwaltung", "gesundheitswesen", "kirche"
+   * z.B. "verwaltung", "gesundheitswesen", "kirche" - NICHT lokalisiert
    */
   slug: string;
   hero: {
@@ -491,7 +502,9 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  title?: T;
   alt?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

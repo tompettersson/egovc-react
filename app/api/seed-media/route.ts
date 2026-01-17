@@ -16,7 +16,12 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { put } from '@vercel/blob'
 
-const SEED_SECRET = process.env.SEED_SECRET || 'egovc-seed-2026'
+const SEED_SECRET = process.env.SEED_SECRET
+
+// Guard: SEED_SECRET must be set in environment
+if (!SEED_SECRET) {
+  console.error('❌ SEED_SECRET environment variable not configured')
+}
 
 // URLs der vorbereiteten Bilder (Unsplash - lizenzfrei)
 const BLOG_IMAGES = [
@@ -53,6 +58,9 @@ const BLOG_IMAGES = [
 export async function POST(request: NextRequest) {
   try {
     // Authentifizierung prüfen
+    if (!SEED_SECRET) {
+      return NextResponse.json({ error: 'SEED_SECRET not configured' }, { status: 500 })
+    }
     const authHeader = request.headers.get('Authorization')
     if (!authHeader || authHeader !== `Bearer ${SEED_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

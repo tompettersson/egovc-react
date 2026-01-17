@@ -9,6 +9,7 @@ export const Whitepapers: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', 'category', 'featured', 'updatedAt'],
+    group: 'Inhalte',
   },
   access: {
     read: () => true,

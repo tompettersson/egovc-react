@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const NetworkPage: GlobalConfig = {
   slug: 'network-page',
   label: 'Netzwerk-Seite',
+  admin: {
+    group: 'Seiten',
+  },
   access: {
     read: () => true,
   },
@@ -18,17 +21,20 @@ export const NetworkPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           defaultValue: 'Europäisches eGovernment Netzwerk',
+          localized: true,
         },
         {
           name: 'subtitle',
           type: 'text',
           label: 'Untertitel',
           defaultValue: 'Für den öffentlichen Sektor',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
         {
           name: 'backgroundImage',
@@ -50,17 +56,20 @@ export const NetworkPage: GlobalConfig = {
           type: 'text',
           label: 'Label',
           defaultValue: 'ÜBER UNS',
+          localized: true,
         },
         {
           name: 'title',
           type: 'text',
           label: 'Titel',
           defaultValue: 'Wer Wir Sind',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
       ],
     },
@@ -76,11 +85,13 @@ export const NetworkPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           defaultValue: 'Vision & Mission',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
       ],
     },
@@ -96,17 +107,20 @@ export const NetworkPage: GlobalConfig = {
           type: 'text',
           label: 'Label',
           defaultValue: 'LEISTUNGSSPEKTRUM',
+          localized: true,
         },
         {
           name: 'title',
           type: 'text',
           label: 'Titel',
           defaultValue: 'Individuelle Lösungen',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           label: 'Beschreibung',
+          localized: true,
         },
       ],
     },
@@ -122,6 +136,7 @@ export const NetworkPage: GlobalConfig = {
           type: 'text',
           label: 'Titel',
           defaultValue: 'Themenfelder',
+          localized: true,
         },
         {
           name: 'fields',
@@ -139,6 +154,7 @@ export const NetworkPage: GlobalConfig = {
               type: 'text',
               label: 'Titel',
               required: true,
+              localized: true,
             },
             {
               name: 'icon',

@@ -9,6 +9,7 @@ export const References: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'title', 'featured', 'order'],
+    group: 'Inhalte',
   },
   access: {
     read: () => true,

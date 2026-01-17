@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const WhitepaperPage: GlobalConfig = {
   slug: 'whitepaper-page',
   label: 'Whitepaper-Seite',
+  admin: {
+    group: 'Seiten',
+  },
   access: {
     read: () => true,
   },

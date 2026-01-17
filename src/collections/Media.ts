@@ -6,6 +6,9 @@ export const Media: CollectionConfig = {
     singular: 'Media',
     plural: 'Media',
   },
+  admin: {
+    group: 'Medien',
+  },
   access: {
     read: () => true,
   },
@@ -36,11 +39,32 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
+      name: 'title',
+      type: 'text',
+      label: 'Titel',
+      localized: true,
+      admin: {
+        description: 'Titel des Mediums für interne Identifikation und SEO',
+      },
+    },
+    {
       name: 'alt',
       type: 'text',
       label: 'Alt Text',
       required: true,
       localized: true,
+      admin: {
+        description: 'Beschreibender Text für Barrierefreiheit (Screenreader)',
+      },
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Beschreibung',
+      localized: true,
+      admin: {
+        description: 'Ausführlichere Beschreibung des Mediums (optional)',
+      },
     },
   ],
 }

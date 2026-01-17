@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const LegalPages: GlobalConfig = {
   slug: 'legal-pages',
   label: 'Rechtliche Seiten',
+  admin: {
+    group: 'Einstellungen',
+  },
   access: {
     read: () => true,
   },
